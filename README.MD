@@ -39,6 +39,7 @@
     <li>Javascript</li>
     <li>Jquery</li>
     <li>Firebase</li>
+    <li>Bootstrap</li>
  </ul>
 
  # Autor
