@@ -1,0 +1,29 @@
+*{
+    zoom: 110%
+}
+
+body{
+    color: #17252A;
+    margin: 0;
+    padding: 0;
+    background-color: #3aafa9;
+}
+
+button, input {
+    text-align: center;
+    background-color: transparent;
+    border-style: solid;
+}
+
+.mainCard{
+    position: absolute;
+}
+
+.hide{
+    display: none;
+}
+
+.bg-def{
+    background-color: #3aafa9;
+};
+

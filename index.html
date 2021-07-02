@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
+    <title>To Rose List</title>
+</head>
+
+<body>
+    <!-- Log Out -->
+    <button class="rounded btn-outline-dark d-none" id="logOutBtn">Log Out</button>
+    <div class="d-flex flex-column align-items-center">
+
+        <!-- LOGIN -->
+        <div class="container mainCard d-flex flex-column align-items-center" id="loginCard">
+            <div class="d-flex m-4">
+                <img src="./IMG/logo.png" width=50px alt="">
+                <h1>To Rose List</h1>
+            </div>
+
+            <input class="rounded btn-outline-dark" placeholder="e-mail" type="text" id="usernameField">
+            <input class="rounded btn-outline-dark m-4" placeholder="password" type="password" id="passField">
+
+
+            <button class="rounded btn-outline-dark" id="loginBtn">login</button>
+            <button class="rounded btn-outline-dark m-4" id="firstTimeBtn">first time?</button>
+        </div>
+
+        <!-- CREATE ACCOUNT -->
+        <div class="container mainCard d-flex flex-column align-items-center d-none" id="createCard">
+            <div class="d-flex m-4">
+                <img src="./IMG/logo.png" width=50px alt="">
+                <h1>To Rose List</h1>
+            </div>
+
+
+            <input class="rounded btn-outline-dark" placeholder="e-mail" type="text" id="createAccountField">
+            <input class="rounded btn-outline-dark m-4" placeholder="password" type="password" id="createPasswordField">
+
+            <button class="rounded btn-outline-dark" id="createAccountBtn">create account</button>
+            <button class="rounded btn-outline-dark m-4" id="goToLoginBtn">login</button>
+        </div>
+
+        <!-- LIST -->
+        <div class="container mainCard d-flex flex-column align-items-center d-none" id="listCard">
+            <div class="d-flex m-4">
+                <img src="./IMG/logo.png" width=50px>
+                <h1>To Rose List</h1>
+            </div>
+            <div class="d-flex m-4">
+                <input class="rounded btn-outline-dark" type="text" placeholder="New List Name" id="newListName">
+                <button class="rounded btn-outline-dark" id="newListBtn" placeholder="new list name">New List</button>
+            </div>
+            <div class="list-group" id="userList">
+            </div>
+
+
+
+        </div>
+        <!-- NEW LIST -->
+        <div class="container mainCard d-flex flex-column align-items-center d-none" id="newList">
+            <div class="d-flex m-4">
+                <img src="./IMG/logo.png" width=50px>
+                <h1>To Rose List</h1>
+            </div>
+            <div class="d-flex flex-column align-items-center" id="newListForm">
+                <h3 class="m-4" id="newListTitle"></h3>
+                <div class="m-4">
+                    <input class="rounded btn-outline-dark" type="text" placeholder="new item" id="newItem">
+                    <button class="rounded btn-outline-dark" id="addItemBtn">add item</button>
+                </div>
+                <div class="list-group" id="addedItems"></div>
+                <button class="rounded btn-outline-dark text-center m-4" id="goBackBtnNewList">Go Back</button>
+            </div>
+        </div>
+
+        <!-- TO DO LIST -->
+        <div class="container mainCard d-flex flex-column align-items-center d-none " id="userListItem">
+            <div class="d-flex m-4">
+                <img src="./IMG/logo.png" width=50px>
+                <h1>To Rose List</h1>
+            </div>
+            <h3 class="m-4" id="listTitle"></h3>
+
+            <div class="d-flex flex-column align-items-center list-group" id="userListItemDiv">
+
+            </div>
+            <button class="rounded btn-outline-dark m-4" id="goBackBtn">Go Back</button>
+        </div>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+        integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="./firebase.js"></script>
+    <script src="./script.js"></script>
+</body>
+
+</html>
