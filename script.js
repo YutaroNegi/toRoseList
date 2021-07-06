@@ -1,6 +1,6 @@
-// checkUsers(printList)
+checkUsers(printList)
 showCard()
-login(printList)
+login()
 createAccount()
 newList(getUserId)
 goBack()
@@ -24,7 +24,7 @@ function checkUsers(callback) {
         }
     });
 }
-function login(callback) {
+function login() {
     // login system
     let loginBtn = document.getElementById("loginBtn")
     let username = document.getElementById("usernameField")
@@ -43,7 +43,7 @@ function login(callback) {
                 $("userListItem").addClass("d-none")
                 $("#listCard").removeClass("d-none")
                 $("#logOutBtn").removeClass("d-none")
-                callback(user) //go back to user list
+                window.location.reload(false);
             })
             .catch((error) => {
                 alert(error)
@@ -185,29 +185,36 @@ function printList(userId) {
     })
 
     function getList(userId, listId) {
+        // Other functions
         deleteList(userId, listId)
+        addNewItemToList()
+        let deleteItemBtn = document.getElementById("deleteItem")
+        deleteItemBtn.addEventListener('click', deleteItem)
+        // Other functions
+
+
         let userListItem = document.getElementById("userListItemDiv")
         userListItem.innerHTML = ""
         let listTitle = document.getElementById("listTitle")
-    
+
         db.collection(userId).doc(listId).get() //Show user clicked list
             .then((doc) => {
                 let listArray = doc.data().list
                 listTitle.innerText = listId
-    
+
                 $("#loginCard").addClass("d-none")
                 $("#createCard").addClass("d-none")
                 $("#listCard").addClass("d-none")
                 $("#userListItem").removeClass("d-none")
-    
+
                 for (i = 0; i < listArray.length; i++) { //get the list from database
                     let p = document.createElement("li")
                     p.innerText = listArray[i]
                     p.classList.add("list-group-item", "list-group-item-action", "bg-def", "text-center")
                     userListItem.appendChild(p)
                 }
-    
-    
+
+
             })
             .catch(err => {
                 console.log(err);
@@ -216,15 +223,15 @@ function printList(userId) {
 
 }
 function deleteList(userId, listId) {
-    ver = document.getElementById("deleteListBtn")
+    let check = document.getElementById("deleteListBtn")
 
-    if (ver == null) {//create delete button
-        let userListItem = document.getElementById("userListItem")
+    if (check == null) {//create delete button
+        let btnDiv = document.getElementById("btnDiv")
         let deleteListBtn = document.createElement('button')
-        deleteListBtn.classList.add("rounded", "btn-outline-dark")
+        deleteListBtn.classList.add("rounded", "btn-outline-dark", "ms-2", "me-2")
         deleteListBtn.id = "deleteListBtn"
         deleteListBtn.innerText = "Delete List"
-        userListItem.appendChild(deleteListBtn)
+        btnDiv.appendChild(deleteListBtn)
         deleteListBtn.addEventListener('click', deleteClick)
 
         function deleteClick() {
@@ -232,21 +239,34 @@ function deleteList(userId, listId) {
                 .then(() => {
                     console.log("lista deletada com sucesso", listId);
                     checkUsers(printList)
-                    userListItem.removeChild(deleteListBtn)
+                    btnDiv.removeChild(deleteListBtn)
                 })
                 .catch(err => {
                     console.log(err);
                 })
         }
     } else { //don't let creat multiple buttons
-        console.log(("button already exists"));
+        console.log("button already exists");
     }
+}
+function addNewItemToList() {
+    let editListBtn = document.getElementById("editListBtn")
+    editListBtn.addEventListener("click", addNewItem)
 }
 function goBack() {
     //go back to users list
     let goBackBtn = document.getElementById("goBackBtn")
+    let editBtn = document.getElementById("newInputDiv")
+
 
     goBackBtn.addEventListener('click', () => {
+        editBtn.innerHTML=""
+        console.log("oi");
+        let editListBtn = document.getElementById("editListBtn") //remove event listner to avoid multiple event trigger
+        editListBtn.removeEventListener("click", addNewItem)
+
+        let deleteItemBtn = document.getElementById("deleteItem") //remove event listner to avoid multiple event trigger
+        deleteItemBtn.removeEventListener('click', deleteItem)
         $("#newList").addClass("d-none")
         $("#loginCard").addClass("d-none")
         $("#createCard").addClass("d-none")
@@ -272,9 +292,76 @@ function logout() {
             $("#newList").addClass("d-none")
             $("#usernameField").val("")
             $("#passField").val("")
-            document.location.reload(true);
+            window.location.reload(false);
         }).catch((error) => {
             console.log(error);
         });
     })
+}
+function addNewItem() { //add a new item input
+    let check = document.getElementById("newItemInput")
+
+
+    if (check == null) {
+        let userListItemDiv = document.getElementById("newInputDiv")
+
+        let addBtn = document.createElement("button")
+        addBtn.innerText = "add"
+        addBtn.classList.add("rounded", "btn-outline-dark")
+
+        let newItemInput = document.createElement("input")
+        newItemInput.classList.add("rounded", "btn-outline-dark")
+        newItemInput.placeholder = "New Item"
+        newItemInput.id = "newItemInput"
+
+
+        userListItemDiv.appendChild(newItemInput)
+        userListItemDiv.appendChild(addBtn)
+
+
+        addBtn.addEventListener('click', () => {//add list items
+            if (newItemInput.value !== "") {
+                let p = document.createElement("li")
+                let userListItemDiv = document.getElementById("userListItemDiv")
+                p.innerText = newItemInput.value
+                p.classList.add("list-group-item", "list-group-item-action", "bg-def", "text-center")
+
+                db.collection(getUserId()).doc($("#listTitle").text()).update(
+                    {
+                        list: firebase.firestore.FieldValue.arrayUnion(newItemInput.value)
+                    }
+                ).then(() => {
+                    console.log("inserido com sucesso");
+                    userListItemDiv.appendChild(p)
+                    newItemInput.value = ""
+                }).catch(error => {
+                    console.log(error);
+                })
+            } else {
+                alert("field can't be empty")
+            }
+        })
+
+    } else console.log
+        ("button already exists");
+}
+function deleteItem(){
+    alert("Click the item to delete")
+    let itensToDel = document.querySelectorAll("li")
+
+    for (let i = 0; i < itensToDel.length; i++) {
+        itensToDel[i].addEventListener('click', () => {
+            let item = event.target
+            db.collection(getUserId()).doc($("#listTitle").text()).update({
+                list: firebase.firestore.FieldValue.arrayRemove(event.target.innerText)
+            }).then(()=>{
+                console.log("item removido com sucesso");
+                console.log(item);
+                item.remove()
+            })
+              .catch(error =>{
+                console.log(error);
+            })
+        })
+    }
 }
