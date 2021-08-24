@@ -30,6 +30,7 @@
     <li>Acessar lista salva na conta</li>
     <li>Criar Lista</li>
     <li>Deletar Lista</li>
+    <li>Editar Lista</li>
  </ul>
 
  # Tecnologias
